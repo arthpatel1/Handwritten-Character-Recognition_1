@@ -1,7 +1,7 @@
 # EEL 5840 Final Project
 # Handwritten character classifier 
-# alphabets: a,b,c,d,h,i,j,k
-# Corrosponding labels: 1,2,3,4,5,6,7,8
+# alphabets: a,b,c,d,h,i,j,k and unknown
+# Corrosponding labels: 1,2,3,4,5,6,7,8 and -1
 
 # Authors: Jaber Aloufi,Arunabho Basu, Cheng-Han Ho, Arth Patel
 
@@ -64,11 +64,14 @@ def train_model(load_train_data, load_train_labels):
 
     # using Support vector classifier of svm for classification
     # the parameter taken for svm.SVC are ( C=1.0, kernel='rbf', degree=4, gamma=0.005, 
-    #   coef0=0.0, shrinking=True, probability=False, tol=0.001, cache_size=200, class_weight=None, 
+    #   coef0=0.0, shrinking=True, probability=True, tol=0.001, cache_size=200, class_weight=None, 
     #   verbose=False, max_iter=-1, decision_function_shape='ovr', random_state=None )
     
-    classifier = svm.SVC(gamma=0.005,degree=4).fit(X_train, y_train)  # fit the model
-    joblib.dump(classifier,r'C:\Users\Arth\Desktop\trained_model.pkl')  # save trained model
+    classifier = svm.SVC(gamma=0.005,degree=4, probability=True).fit(X_train, y_train)  # fit the model
+    joblib.dump(classifier,r'C:\Users\Arth\Documents\GitHub\project-01-mlprojectgroup55\trained_model.pkl')  # save trained model
+    
+    # Here we are also recording probability so we can know that each result has how much probabilty
+    # we can use this probaility to remove predictions with very low probabilty 
     
     # knn and other models we experimeted with
     """

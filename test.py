@@ -1,7 +1,7 @@
 # EEL 5840 Final Project
 # Handwritten character recognition 
-# alphabets: a,b,c,d,h,i,j,k
-# Corrosponding labels: 1,2,3,4,5,6,7,8
+# alphabets: a,b,c,d,h,i,j,k and unknown
+# Corrosponding labels: 1,2,3,4,5,6,7,8 and -1
 
 # Authors: Jaber Aloufi,Arunabho Basu, Cheng-Han Ho, Arth Patel
 
@@ -46,8 +46,33 @@ def test_char(classifier,data):
     classifier1 = joblib.load(classifier) # Load trained model
     
     test_predict = classifier1.predict(test_set)  # Predict labels of test data
+            
+    # Extra credit---------------------------------------------------------
+    # We are recording probabilty of each class of each images
+    # Then assign label = -1 if probabilty of each class of the image is less then 0.25
+    # So, if prediction probabilities of the given image for all 8 class will be less then 0.25
+    # then we can say that our prediction is not very strong and our algorithm has little confidence 
+    # in the predicted result. 
     
-    print("Array of predicted labels: ",test_predict)  # Print results
+    class_prob = classifier1.predict_proba(test_set)
+    s = np.shape(class_prob)
+        
+    x = np.array([])
+    for i in range (s[0]):
+        res = all(ele < 0.25 for ele in class_prob[i])  # Check probabiltilies of the prediction
+        if res == False: 
+            x = np.append(x,0)
+        if res == True:
+            x = np.append(x,-1)
+    
+    final_pred = np.array([])  # Final prdiction array
+    for i in range (s[0]):
+        if x[i] == -1:
+            final_pred = np.append(final_pred,x[i]) # replace previous prediction with -1
+        else:
+            final_pred = np.append(final_pred,test_predict[i]) # keep original result
+    
+    print("Array of predicted labels: ",final_pred)  # Print results
     return test_predict
 #========================================================================================
     
