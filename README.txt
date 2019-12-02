@@ -4,8 +4,8 @@ Using test.py Program To Predict Labels of Test Dataset
 2. trained_model.pkl is already trained model for given test scenario
 3. Load test.py in your editor
 4. Function, test_char(classifier, data) has two inputs
-1. Trained model
-2. Test data in .pkl format
+- (A) Trained model
+- (B)  Test data in .pkl format
 5. Enter path of trained_model.pkl and test data
 6. Run the code
 7. It will give vector with predicted labels
