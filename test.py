@@ -1,8 +1,9 @@
 # EEL 5840 Final Project
 # Handwritten character recognition 
-# alphabets: a,b,c,d,h,i,j,k and unknown
-# Corrosponding labels: 1,2,3,4,5,6,7,8 and -1
+# alphabets: a,b,c,d,h,i,j,k
+# Corrosponding labels: 1,2,3,4,5,6,7,8
 
+# If the test image size is grater then (50,50) we assign that image -1 label 
 # Authors: Jaber Aloufi,Arunabho Basu, Cheng-Han Ho, Arth Patel
 
 import numpy as np
@@ -36,7 +37,9 @@ def test_char(classifier,data):
         
             d2 = np.reshape(bool_arr_test,2500) # Converting each image into 1d array
             test_set = np.append(test_set,d2)  # Put all images into one array
-
+        else:
+            test_set = np.append(test_set,np.zeros(2500)) # if image is grater then (50,50) update array by zeros
+            
     array_size = np.shape(test_set)
     set_size = int(array_size[0]/2500) 
 
@@ -46,35 +49,34 @@ def test_char(classifier,data):
     classifier1 = joblib.load(classifier) # Load trained model
     
     test_predict = classifier1.predict(test_set)  # Predict labels of test data
-            
-    # Extra credit---------------------------------------------------------
-    # We are recording probabilty of each class of each images
-    # Then assign label = -1 if probabilty of each class of the image is less then 0.25
-    # So, if prediction probabilities of the given image for all 8 class will be less then 0.25
-    # then we can say that our prediction is not very strong and our algorithm has little confidence 
-    # in the predicted result. 
     
     class_prob = classifier1.predict_proba(test_set)
+    #print(classifier1.predict_proba(test_set))
     s = np.shape(class_prob)
         
     x = np.array([])
     for i in range (s[0]):
-        res = all(ele < 0.25 for ele in class_prob[i])  # Check probabiltilies of the prediction
-        if res == False: 
-            x = np.append(x,0)
-        if res == True:
+        a = class_prob[i]
+        res = all(ele < 0.25 for ele in class_prob[i])  
+        
+        if a[5] >= 0.3108 and a[6] > 0.4725 and a[1] > 0.1025: 
             x = np.append(x,-1)
-    
-    final_pred = np.array([])  # Final prdiction array
+        elif res == True:
+            x = np.append(x,-1)
+        else :
+            x= np.append(x,0)
+    # in our set if image size is grater then (50,50) we assign that image -1 label  
+    y = np.array([])
     for i in range (s[0]):
         if x[i] == -1:
-            final_pred = np.append(final_pred,x[i]) # replace previous prediction with -1
+            y = np.append(y,x[i])
         else:
-            final_pred = np.append(final_pred,test_predict[i]) # keep original result
+            y = np.append(y,test_predict[i])
     
-    print("Array of predicted labels: ",final_pred)  # Print results
-    return test_predict
+    
+    print("Array of predicted labels: ",y)  # Print results
+    return y
 #========================================================================================
     
 # Enter trained model path and test data path to predict labels of test data (test data is in .pkl format)    
-test_char(r'C:\Users\Downloads\trained_model.pkl',r'C:\Users\Downloads\testdata.pkl') 
+test_char(r'C:\Users\Arth\Desktop\UF\EEL 5840\Project\trained_model.pkl',r'C:\Users\Arth\Downloads\data_b.npy') 
