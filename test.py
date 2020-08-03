@@ -1,10 +1,9 @@
-# EEL 5840 Final Project
 # Handwritten character recognition 
 # alphabets: a,b,c,d,h,i,j,k
 # Corrosponding labels: 1,2,3,4,5,6,7,8
 
 # If the test image size is grater then (50,50) we assign that image -1 label 
-# Authors: Jaber Aloufi,Arunabho Basu, Cheng-Han Ho, Arth Patel
+
 
 import numpy as np
 import math
