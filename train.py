@@ -1,9 +1,7 @@
-# EEL 5840 Final Project
 # Handwritten character classifier 
 # alphabets: a,b,c,d,h,i,j,k and unknown
 # Corrosponding labels: 1,2,3,4,5,6,7,8 and -1
 
-# Authors: Jaber Aloufi,Arunabho Basu, Cheng-Han Ho, Arth Patel
 
 # Import Packages
 import numpy as np
